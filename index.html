@@ -1,0 +1,69 @@
+<!DOCTYPE html>
+      <html>
+      <head>
+        <title>파일 업로드</title>
+      </head>
+      <body>
+        <input type="file" id="selector" multiple>
+        <button onclick="upload()">Upload</button>
+
+        <div id="status">No uploads</div>
+
+        <script type="text/javascript">
+        // `upload` iterates through all files selected and invokes a helper function called `retrieveNewURL`.
+        function upload() {
+                // Get selected files from the input element.
+                var files = document.querySelector("#selector").files;
+                for (var i = 0; i < files.length; i++) {
+                    var file = files[i];
+                    // Retrieve a URL from our server.
+                    retrieveNewURL(file, (file, url) => {
+                        // Upload the file to the server.
+                        uploadFile(file, url);
+                    });
+                }
+            }
+
+            // `retrieveNewURL` accepts the name of the current file and invokes the `/presignedUrl` endpoint to
+            // generate a pre-signed URL for use in uploading that file: 
+            function retrieveNewURL(file, cb) {
+                fetch(`/presignedUrl?name=${file.name}`).then((response) => {
+                    response.text().then((url) => {
+                        cb(file, url);
+                        console.log(`Generated URL: ${url}`);
+
+                    });
+                }).catch((e) => {
+                    console.error(e);
+                });
+            }
+
+
+
+            // `uploadFile` accepts the current filename and the pre-signed URL. It then uses `Fetch API`
+            function uploadFile(file, url) {
+            if (document.querySelector('#status').innerText === 'No uploads') {
+                document.querySelector('#status').innerHTML = '';
+            }
+            console.log(`Uploading ${file.name} to ${url}`);
+            // 테스트용 고정 서명 주소
+            const fileurl = "http://localhost:9000/uploads/" + file.name;
+            fetch(url, {
+                method: 'PUT',
+                body: file,
+            }).then((response) => {
+                if (!response.ok) {
+                throw new Error(`HTTP error! status: ${response.status}`);
+                }
+                console.log(`Uploaded ${file.name}.`);
+                console.log(`url: ${url}`);
+                // If multiple files are uploaded, append upload status on the next line.
+                document.querySelector('#status').innerHTML += `<br>Uploaded ${file.name}.`;
+            }).catch((e) => {
+                console.error(e);
+                document.querySelector('#status').innerHTML += `<br>Failed to upload ${file.name}.`;
+            });
+            }
+        </script>
+      </body>
+      </html>
