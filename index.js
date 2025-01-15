@@ -105,7 +105,8 @@ app.get('/presignedUrl', async (req, res) => {
   await minioClient.presignedPutObject('uploads', req.query.name, 24 * 60 * 60, (err, url) => {
     if (err) throw err
 
-    res.send(url);
+    const fixedUrl = url.replace('http://minio:9000', 'http://localhost:9002');
+    res.send(fixedUrl);
   })
 });
 
