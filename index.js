@@ -6,6 +6,8 @@ const path = require('path');
 const app = express();
 const port = 3000;
 
+app.use(express.json());
+
 // MySQL 연결 설정
 const db = mysql.createConnection({
   host: process.env.DB_HOST || 'localhost',
@@ -108,6 +110,36 @@ app.get('/presignedUrl', async (req, res) => {
     const fixedUrl = url.replace('http://minio:9000', 'http://localhost:9002');
     res.send(fixedUrl);
   })
+});
+
+// 파일 조회
+app.get('/uploadedFiles', (req, res) => {
+  // MySQL에서 파일 목록 조회
+  db.query('SELECT * FROM files', (err, results) => {
+    if (err) {
+      console.error('파일 조회 오류:', err);
+      res.status(500).send('파일 조회 오류');
+      return;
+    }
+    res.json(results);
+  });
+});
+
+// 파일 정보 저장
+app.post('/saveFileInfo', (req, res) => {
+  const { name } = req.body;
+
+  const url = `http://localhost:9000/uploads/${name}`;
+
+  // MySQL에 파일 정보 저장
+  db.query('INSERT INTO files (filename, fileurl) VALUES (?, ?)', [name, url], (err) => {
+    if (err) {
+      console.error('파일 정보 저장 오류:', err);
+      res.status(500).send('파일 정보 저장 오류');
+      return;
+    }
+    res.send('파일 정보 저장 완료');
+  });
 });
 
 // HTML 폼 라우트

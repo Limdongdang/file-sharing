@@ -7,5 +7,3 @@ CREATE TABLE IF NOT EXISTS files (
   fileurl VARCHAR(255) NOT NULL UNIQUE
 );
 
-INSERT INTO files (filename, fileurl) VALUES ('Chill Guy', 'dds');
-
