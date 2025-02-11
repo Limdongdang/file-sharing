@@ -10,30 +10,7 @@ services:
       - "3307:3306"
     volumes:
       - ./init.sql:/docker-entrypoint-initdb.d/init.sql
-
-  backend:
-    build: ./backend
-    ports:
-      - "3000:3000"
-    depends_on:
-      - db
-      - minio
-    environment:
-      DB_HOST: db
-      DB_USER: exampleuser
-      DB_PASSWORD: examplepass
-      DB_NAME: exampledb
-      MINIO_ENDPOINT: minio
-      MINIO_ROOT_USER: minio
-      MINIO_ROOT_PASSWORD: minio123
-    
-  frontend:
-    build: ./frontend
-    ports:
-      - "8080:8080"
-    depends_on:
-      - backend
-
+      
   minio:
     image: minio/minio
     command: server /data --console-address ":9001"
