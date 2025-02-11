@@ -1,0 +1,15 @@
+{
+  "name": "file-sharing",
+  "version": "1.0.0",
+  "description": "파일 공유 로직",
+  "workspaces": [
+    "apps/*"
+  ],
+  "scripts": {
+    "build": "npm run build -w frontend && npm run build -w backend",
+    "start": "npm run start -w backend && npm run dev -w frontend"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC"
+}
