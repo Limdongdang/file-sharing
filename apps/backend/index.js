@@ -13,7 +13,8 @@ const db = mysql.createConnection({
   host: process.env.DB_HOST || 'localhost',
   user: process.env.DB_USER || 'exampleuser',
   password: process.env.DB_PASSWORD || 'examplepass',
-  database: process.env.DB_NAME || 'exampledb'
+  database: process.env.DB_NAME || 'exampledb',
+  port: process.env.DB_PORT || 3307
 });
 
 // MySQL 연결
@@ -27,7 +28,7 @@ db.connect((err) => {
 
 // MinIO 클라이언트 설정
 const minioClient = new Minio.Client({
-  endPoint: 'minio',
+  endPoint: 'localhost',
   port: 9000,
   useSSL: false,
   accessKey: 'minio',
