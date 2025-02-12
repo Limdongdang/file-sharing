@@ -1,30 +1,23 @@
-const express = require('express');
-const mysql = require('mysql');
-const Minio = require('minio');
-const multer = require('multer');
-const path = require('path');
+import express from 'express';
+import * as Minio from 'minio';
+import multer from 'multer';
+import path from 'path';
+import { sequelize } from './src/model/index.js';
+
 const app = express();
 const port = 3000;
 
 app.use(express.json());
 
-// MySQL 연결 설정
-const db = mysql.createConnection({
-  host: process.env.DB_HOST || 'localhost',
-  user: process.env.DB_USER || 'exampleuser',
-  password: process.env.DB_PASSWORD || 'examplepass',
-  database: process.env.DB_NAME || 'exampledb',
-  port: process.env.DB_PORT || 3307
-});
-
 // MySQL 연결
-db.connect((err) => {
-  if (err) {
+sequelize.sync()
+  .then(() => {
+    console.log('MySQL 연결 성공');
+  })
+  .catch((err) => {
     console.error('MySQL 연결 오류:', err);
-    return;
-  }
-  console.log('MySQL에 연결되었습니다.');
-});
+  });
+
 
 // MinIO 클라이언트 설정
 const minioClient = new Minio.Client({
@@ -152,3 +145,5 @@ app.get('/', (req, res) => {
 app.listen(port, () => {
   console.log(`Server is running at http://localhost:${port}`);
 });
+
+app.use('/files', fileRoutes);
