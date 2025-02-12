@@ -2,15 +2,20 @@ import express from 'express';
 import * as Minio from 'minio';
 import multer from 'multer';
 import path from 'path';
-import fileRoutes from './src/routes/file.js';
 import { sequelize } from './src/model/index.js';
 import { fileURLToPath } from 'url';
 import { File } from './src/model/file.model.js';
+import { specs, swaggerUi } from './src/swagger.js';
+import fileRoutes from './src/routes/file.js';
 
 const app = express();
 const port = 3000;
 
 app.use(express.json());
+
+// swagger UI 설정
+app.use('/api-docs', swaggerUi.serve, swaggerUi.setup(specs));
+app.use('/file', fileRoutes);
 
 // MySQL 연결
 await sequelize.sync({ force: false })
@@ -152,5 +157,3 @@ app.get('/', (req, res) => {
 app.listen(port, () => {
   console.log(`Server is running at http://localhost:${port}`);
 });
-
-app.use('/file', fileRoutes);
