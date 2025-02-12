@@ -2,7 +2,10 @@ import express from 'express';
 import * as Minio from 'minio';
 import multer from 'multer';
 import path from 'path';
+import fileRoutes from './src/routes/file.js';
 import { sequelize } from './src/model/index.js';
+import { fileURLToPath } from 'url';
+import { File } from './src/model/file.model.js';
 
 const app = express();
 const port = 3000;
@@ -10,7 +13,7 @@ const port = 3000;
 app.use(express.json());
 
 // MySQL 연결
-sequelize.sync()
+await sequelize.sync({ force: false })
   .then(() => {
     console.log('MySQL 연결 성공');
   })
@@ -106,35 +109,39 @@ app.get('/presignedUrl', async (req, res) => {
   })
 });
 
+
 // 파일 조회
-app.get('/uploadedFiles', (req, res) => {
-  // MySQL에서 파일 목록 조회
-  db.query('SELECT * FROM files', (err, results) => {
-    if (err) {
-      console.error('파일 조회 오류:', err);
-      res.status(500).send('파일 조회 오류');
-      return;
-    }
-    res.json(results);
-  });
-});
+// app.get('/uploadedFiles', (req, res) => {
+//   // MySQL에서 파일 목록 조회
+//   db.query('SELECT * FROM files', (err, results) => {
+//     if (err) {
+//       console.error('파일 조회 오류:', err);
+//       res.status(500).send('파일 조회 오류');
+//       return;
+//     }
+//     res.json(results);
+//   });
+// });
 
 // 파일 정보 저장
-app.post('/saveFileInfo', (req, res) => {
-  const { name } = req.body;
+// app.post('/saveFileInfo', (req, res) => {
+//   const { name } = req.body;
 
-  const url = `http://localhost:9000/uploads/${name}`;
+//   const url = `http://localhost:9000/uploads/${name}`;
 
-  // MySQL에 파일 정보 저장
-  db.query('INSERT INTO files (filename, fileurl) VALUES (?, ?)', [name, url], (err) => {
-    if (err) {
-      console.error('파일 정보 저장 오류:', err);
-      res.status(500).send('파일 정보 저장 오류');
-      return;
-    }
-    res.send('파일 정보 저장 완료');
-  });
-});
+//   // MySQL에 파일 정보 저장
+//   db.query('INSERT INTO files (filename, fileurl) VALUES (?, ?)', [name, url], (err) => {
+//     if (err) {
+//       console.error('파일 정보 저장 오류:', err);
+//       res.status(500).send('파일 정보 저장 오류');
+//       return;
+//     }
+//     res.send('파일 정보 저장 완료');
+//   });
+// });
+
+const __filename = fileURLToPath(import.meta.url);
+const __dirname = path.dirname(__filename);
 
 // HTML 폼 라우트
 app.get('/', (req, res) => {

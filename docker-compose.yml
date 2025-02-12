@@ -8,8 +8,6 @@ services:
       MYSQL_PASSWORD: examplepass
     ports:
       - "3307:3306"
-    volumes:
-      - ./apps/backend/init.sql:/docker-entrypoint-initdb.d/init.sql
 
   minio:
     image: minio/minio
