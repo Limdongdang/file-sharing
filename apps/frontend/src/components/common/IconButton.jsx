@@ -1,5 +1,4 @@
 import React from 'react';
-import { SlOptionsVertical } from 'react-icons/sl';
 import styled from 'styled-components';
 
 const IconButtonWrapper = styled.div`
@@ -20,10 +19,10 @@ const IconButtonWrapper = styled.div`
     }
 `;
 
-const IconButton = ({ icon: Icon, onClick }) => { 
+const IconButton = ({ icon: Icon, onClick, size = 24 }) => { 
     return (
         <IconButtonWrapper onClick={onClick}>
-            <Icon />
+            <Icon size={size}/>
         </IconButtonWrapper>
     );
 };

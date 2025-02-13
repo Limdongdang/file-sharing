@@ -3,6 +3,7 @@ import duckLogo from '../assets/duck.png';
 import styled from 'styled-components';
 import { IoMdSettings } from "react-icons/io";
 import { FaUser, FaUserAlt, FaUserCircle } from 'react-icons/fa';
+import IconButton from './common/IconButton';
 
 const HeaderContainer = styled.header`
   width: 100%;
@@ -34,9 +35,8 @@ const NavItems = styled.ul`
 const NavItem = styled.li`
   display: inline-block;
   align-items: center;
-  margin : 0 5px;
-  padding: 10px;
   border-radius: 50%;
+  margin: 0 8px;
 
   svg {
     vertical-align: middle;
@@ -56,8 +56,8 @@ const Header = () => {
         </Logo>
         <Nav>
         <NavItems>
-            <NavItem><FaUserCircle size={26}/></NavItem>
-            <NavItem><IoMdSettings size={30}/></NavItem>
+            <NavItem><IconButton icon={FaUserCircle} size={24}></IconButton></NavItem>
+            <NavItem><IconButton icon={IoMdSettings} size={24}></IconButton></NavItem>
         </NavItems>
         </Nav>
     </HeaderContainer>
