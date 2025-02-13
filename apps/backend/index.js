@@ -1,5 +1,5 @@
 import express from 'express';
-import * as Minio from 'minio';
+import cors from 'cors';
 import path from 'path';
 import { sequelize } from './src/model/index.js';
 import { fileURLToPath } from 'url';
@@ -7,10 +7,12 @@ import { File } from './src/model/file.model.js';
 import { specs, swaggerUi } from './src/swagger.js';
 import fileRoutes from './src/routes/file.js';
 import { initializeMinio } from './src/config/minio.js';
+import corsOptions from './src/config/cors.js';
 
 const app = express();
 const port = 3000;
 
+app.use(cors(corsOptions));
 app.use(express.json());
 
 // swagger UI 설정
