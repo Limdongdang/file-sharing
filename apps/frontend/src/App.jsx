@@ -1,13 +1,25 @@
+import { BrowserRouter, Route, Routes } from 'react-router-dom'
 import './App.css'
-import Header from './components/header'
-import SideBar from './components/sidebar'
+import Content from './components/Content'
+import Header from './components/Header'
+import SideBar from './components/SideBar'
+import Home from './pages/Home'
+import MyFiles from './pages/MyFiles'
 
 function App() {
 
   return (
     <>
-      <Header />
-      <SideBar />
+      <BrowserRouter>
+        <Header />
+        <SideBar />
+        <Content>
+          <Routes>
+            <Route path="/" element={<Home />} />
+            <Route path="/myfiles" element={<MyFiles />} />
+          </Routes>
+        </Content>
+      </BrowserRouter>
     </>
   )
 }

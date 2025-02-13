@@ -4,7 +4,8 @@ import { FaFileAlt, FaHome, FaShare } from 'react-icons/fa'; // react-iconsÏóêÏÑ
 import { IoFileTrayStackedSharp } from "react-icons/io5";
 
 const Container = styled.div`
-    width: 240px;
+    width: 25%;
+    min-width: 200px;
     height: 100%;
     background-color: #F4F6F9;
     z-index: 1000;
