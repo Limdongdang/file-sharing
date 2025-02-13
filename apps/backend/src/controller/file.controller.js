@@ -1,18 +1,5 @@
-// const fileService = require('../service/file.service');
+import fileService from '../service/file.service.js';
 
-/**
- * @swagger
- * /file/upload:
- *   get:
- *     summary: Upload a file
- *     tags:
- *       - File
- *     responses:
- *       200:
- *         description: File uploaded successfully
- *       500:
- *         description: Internal server error
- */
 export const uploadFile = async (req, res) => {
     try {
         res.status(200).send('파일 업로드 성공');
@@ -21,3 +8,13 @@ export const uploadFile = async (req, res) => {
         res.status(500).send(error.message);
     }
 };
+
+export const getFiles = async (req, res) => {
+    try {
+        const result = await fileService.getFiles();
+        res.status(200).send(result);
+    }
+    catch (error) {
+        res.status(500).send(error.message);
+    }
+}
