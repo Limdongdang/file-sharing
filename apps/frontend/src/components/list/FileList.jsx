@@ -2,6 +2,7 @@ import React from 'react';
 import styled from 'styled-components';
 import { SlOptionsVertical } from "react-icons/sl";
 import IconButton from '../common/IconButton';
+import DropdownMenu from '../common/DropdownMenu';
 
 const List = styled.div`
   list-style: none;
@@ -85,6 +86,11 @@ const getFileIcon = (type) => {
 };
 
 const FileList = () => {
+  const menuItems = [
+    { label: '다운로드', onClick: () => alert('다운로드 클릭됨') },
+    { label: '삭제', onClick: () => alert('삭제 클릭됨') },
+  ];
+
   return (
     <List>
         <ListHeader>
@@ -104,7 +110,7 @@ const FileList = () => {
             <div style={{ flex: 2 }}>{data.size}</div>
             <div style={{ flex: 2 }}>{data.date}</div>
             <div style={{ flex: 1 }}>
-              <IconButton icon={SlOptionsVertical} size={20}></IconButton>
+              <DropdownMenu icon={SlOptionsVertical} menuItems={menuItems} />
             </div>
         </ListItem>
         ))}
