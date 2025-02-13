@@ -1,8 +1,9 @@
-import React from 'react';
+import React, { useEffect, useState } from 'react';
 import styled from 'styled-components';
 import { SlOptionsVertical } from "react-icons/sl";
 import IconButton from '../common/IconButton';
 import DropdownMenu from '../common/DropdownMenu';
+import fileService from '../../services/file.service';
 
 const List = styled.div`
   list-style: none;
@@ -90,6 +91,20 @@ const FileList = () => {
     { label: '다운로드', onClick: () => alert('다운로드 클릭됨') },
     { label: '삭제', onClick: () => alert('삭제 클릭됨') },
   ];
+  const [filelist, setFilelist] = useState([]);
+
+  useEffect(() => {
+    const fetchData = async () => {
+      try{
+        const filelist = await fileService.getFiles();
+        console.log(filelist);
+        setFilelist(filelist);
+      } catch (error) {
+        console.error(error);
+      }
+    };
+    fetchData();
+  }, []);
 
   return (
     <List>
