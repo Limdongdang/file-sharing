@@ -2,10 +2,9 @@ import React from 'react';
 import styled from 'styled-components';
 
 const Container = styled.div`
-    margin-left: max(200px, 25%);
+    margin-left: clamp(200px, 20%, 300px);
     padding: 8px;
     height: 100%;
-    background-color: red;
 `;
 
 

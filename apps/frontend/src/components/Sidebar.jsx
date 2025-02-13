@@ -5,8 +5,9 @@ import { IoFileTrayStackedSharp } from "react-icons/io5";
 import { Link } from 'react-router-dom';
 
 const Container = styled.div`
-    width: 25%;
+    width: 20%;
     min-width: 200px;
+    max-width: 300px;
     height: 100%;
     background-color: #F4F6F9;
     z-index: 1000;

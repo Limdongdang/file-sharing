@@ -4,7 +4,7 @@ import React from 'react';
 const MyFiles = () => {
   return (
     <div>
-      <h1>내 파일함</h1>
+      <h3>업데이트 예정</h3>
     </div>
   );
 };
