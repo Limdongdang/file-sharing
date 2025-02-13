@@ -1,9 +1,9 @@
 import React, { useEffect, useState } from 'react';
 import styled from 'styled-components';
 import { SlOptionsVertical } from "react-icons/sl";
-import IconButton from '../common/IconButton';
 import DropdownMenu from '../common/DropdownMenu';
 import fileService from '../../services/file.service';
+import { parseISO, format } from 'date-fns';
 
 const List = styled.div`
   list-style: none;
@@ -73,18 +73,27 @@ const FILEDATAEXAMEPLE = [
   },
 ]
 
-const getFileIcon = (type) => {
-  switch (type) {
-    case 'video':
-      return '🎥';
-    case 'image':
-      return '📷';
-    case 'document':
-      return '📄';
-    default:
-      return
+// 파일 MIME 타입에 따라 아이콘을 반환하는 함수
+const getFileIconWithMimetype = (mimetype) => {
+  if (mimetype.includes('video')) {
+    return '🎥';
+  } else if (mimetype.includes('image')) {
+    return '📷';
+  } else if (mimetype.includes('pdf')) {
+    return '📃';
+  } else {
+    return '📄';
   }
-};
+}
+
+// 파일 날짜를 받아와서 yyyy.mm.dd 형식으로 반환하는 함수
+const FormatDate = (isoString) => {
+  const date = parseISO(isoString);
+  if (date.getFullYear() === new Date().getFullYear()) {
+    return format(date, 'MM월 dd일');
+  }
+  return format(date, 'yyyy.MM.dd');
+}
 
 const FileList = () => {
   const menuItems = [
@@ -98,7 +107,7 @@ const FileList = () => {
       try{
         const filelist = await fileService.getFiles();
         console.log(filelist);
-        setFilelist(filelist);
+        setFilelist(filelist.data);
       } catch (error) {
         console.error(error);
       }
@@ -113,17 +122,17 @@ const FileList = () => {
             <div key={index} style={{ flex: header.flex }}>{header.name}</div>
             ))}
         </ListHeader>
-        {FILEDATAEXAMEPLE.map((data, index) => (
+        {filelist?.map((data, index) => (
         <ListItem key={index}>
             <div style={{ flex: 4, display: 'flex'}}>
               <IconWrapper>
-                {getFileIcon(data.type)}
+                {getFileIconWithMimetype(data.mimetype)}
               </IconWrapper>
               <span style={{marginLeft: '8px'}}></span>
-              {data.name}
+              {data.originalname}
             </div>
             <div style={{ flex: 2 }}>{data.size}</div>
-            <div style={{ flex: 2 }}>{data.date}</div>
+            <div style={{ flex: 2 }}>{FormatDate(data.createdAt)}</div>
             <div style={{ flex: 1 }}>
               <DropdownMenu icon={SlOptionsVertical} menuItems={menuItems} />
             </div>
