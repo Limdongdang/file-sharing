@@ -1,13 +1,14 @@
 import React from 'react';
 import duckLogo from '../assets/duck.png';
 import styled from 'styled-components';
+import { IoMdSettings } from "react-icons/io";
+import { FaUser, FaUserAlt, FaUserCircle } from 'react-icons/fa';
 
 const HeaderContainer = styled.header`
   width: 100%;
   height: 60px;
   z-index: 2000;
   background-color: #cbdbfc;
-  box-shadow: 0 2px 2px rgba(0, 0, 0, 0.05), 0 1px 0 rgba(0, 0, 0, 0.05);
   display: flex;
   justify-content: space-between;
   align-items: center;
@@ -24,29 +25,26 @@ const Logo = styled.a`
 `;
 
 const Nav = styled.nav`
-  float: right;
 `;
 
 const NavItems = styled.ul`
-  display: inline-block;
-  margin: 0;
-  padding: 0;
-  list-style: none;
-  min-width: 500px;
+  margin-right: 24px;
 `;
 
 const NavItem = styled.li`
   display: inline-block;
+  align-items: center;
+  margin : 0 5px;
+  padding: 10px;
+  border-radius: 50%;
 
-  a {
-    line-height: 60px;
-    padding: 0 30px;
-    color: #1657dd;
-    text-decoration: none;
+  svg {
+    vertical-align: middle;
+  }
 
-    &:hover {
-      color: #092d77;
-    }
+  &:hover {
+    cursor: pointer;
+    background-color: #a4c2f4;
   }
 `;
 
@@ -58,10 +56,8 @@ const Header = () => {
         </Logo>
         <Nav>
         <NavItems>
-            <NavItem><a href="#home">Home</a></NavItem>
-            <NavItem><a href="#news">Uploads</a></NavItem>
-            <NavItem><a href="#contact">Contact</a></NavItem>
-            <NavItem><a href="#about">About</a></NavItem>
+            <NavItem><FaUserCircle size={26}/></NavItem>
+            <NavItem><IoMdSettings size={30}/></NavItem>
         </NavItems>
         </Nav>
     </HeaderContainer>
