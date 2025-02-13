@@ -19,3 +19,13 @@ export const getFiles = async (req, res) => {
         res.status(500).send(error.message);
     }
 }
+
+export const getPresignedUrl = async (req, res) => {
+    try {
+        const url = await fileService.getPresignedUrl(req.query.name);
+        res.status(200).send(url);
+    }
+    catch (error) {
+        res.status(500).send(error.message);
+    }
+}
