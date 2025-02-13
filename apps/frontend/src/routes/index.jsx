@@ -2,6 +2,7 @@
 import Layout from '../layout/Layout';
 import Home from '../pages/Home';
 import MyFiles from '../pages/MyFiles';
+import SharedFiles from '../pages/SharedFiles';
 
 const routes = [
   {
@@ -10,6 +11,7 @@ const routes = [
     children: [
       { path: '/', element: <Home /> },
       { path: '/myfiles', element: <MyFiles /> },
+      { path: '/sharedfiles', element: <SharedFiles /> },
     ],
   },
 ];

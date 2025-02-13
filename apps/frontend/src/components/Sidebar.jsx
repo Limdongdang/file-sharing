@@ -2,6 +2,7 @@ import React from 'react';
 import styled from 'styled-components';
 import { FaFileAlt, FaHome, FaShare } from 'react-icons/fa'; // react-icons에서 아이콘 import
 import { IoFileTrayStackedSharp } from "react-icons/io5";
+import { Link } from 'react-router-dom';
 
 const Container = styled.div`
     width: 25%;
@@ -22,7 +23,7 @@ const SideMenu = styled.div`
     box-sizing: border-box;
 `;
 
-const Button = styled.div`
+const Button = styled(Link)`
     width: 100%;
     height: 40px;
     border-radius: 20px;
@@ -30,6 +31,7 @@ const Button = styled.div`
     box-sizing: border-box;
     display: flex;
     align-items: center;
+    color: inherit;
 
     &:hover {
         background-color: #1657dd;
@@ -48,15 +50,15 @@ const SideBar = () => {
   return (
     <Container>
         <SideMenu>
-            <Button>
+            <Button to={'/'}>
                 <FaHome size={20}/>
                 홈
             </Button>
-            <Button>
+            <Button to={'/myfiles'}>
                 <IoFileTrayStackedSharp size={20}/>
                 내 파일함
             </Button>
-            <Button>
+            <Button to={'/sharedfiles'}>
                 <FaShare size={20}/>
                 공유 파일함
             </Button>
