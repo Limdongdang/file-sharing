@@ -1,8 +1,11 @@
 import React from 'react';
 import styled from 'styled-components';
-import { FaFileAlt, FaHome, FaShare } from 'react-icons/fa'; // react-icons에서 아이콘 import
+import { FaFileAlt, FaFileUpload, FaHome, FaLink, FaShare, FaUpload } from 'react-icons/fa';
+import { RiFolderUploadFill } from "react-icons/ri";
 import { IoFileTrayStackedSharp } from "react-icons/io5";
 import { Link } from 'react-router-dom';
+import DropdownMenu from './common/DropdownMenu';
+import Divider from './common/Divider';
 
 const Container = styled.div`
     width: 20%;
@@ -46,11 +49,19 @@ const Button = styled(Link)`
 `;
 
 
-
 const SideBar = () => {
+    const uploadMenuItems = [
+        { icon : FaFileUpload , label: '파일 업로드', onClick: () => alert('파일 업로드 클릭됨') },
+        { icon: RiFolderUploadFill,label: '폴더 업로드', onClick: () => alert('폴더 업로드 클릭됨') },
+        { icon: FaLink ,label: '링크 업로드', onClick: () => alert('링크 업로드 클릭됨') },
+    ];
+
   return (
     <Container>
         <SideMenu>
+            <DropdownMenu icon={FaUpload} menuItems={uploadMenuItems} $normal title='업로드' size={16}>
+            </DropdownMenu>
+            <Divider></Divider>
             <Button to={'/'}>
                 <FaHome size={20}/>
                 홈

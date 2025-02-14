@@ -4,6 +4,7 @@ import { SlOptionsVertical } from "react-icons/sl";
 import DropdownMenu from '../common/DropdownMenu';
 import fileService from '../../services/file.service';
 import { parseISO, format } from 'date-fns';
+import DropdownCircle from '../common/DropdownCircle';
 
 const List = styled.div`
   list-style: none;
@@ -134,7 +135,7 @@ const FileList = () => {
             <div style={{ flex: 2 }}>{data.size}</div>
             <div style={{ flex: 2 }}>{FormatDate(data.createdAt)}</div>
             <div style={{ flex: 1 }}>
-              <DropdownMenu icon={SlOptionsVertical} menuItems={menuItems} />
+              <DropdownCircle icon={SlOptionsVertical} menuItems={menuItems}/>
             </div>
         </ListItem>
         ))}
