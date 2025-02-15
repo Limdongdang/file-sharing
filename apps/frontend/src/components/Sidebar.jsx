@@ -64,9 +64,7 @@ const SideBar = () => {
             fileInput.onchange = async (event) => {
                 const file = event.target.files[0];
                 if (file) {
-                    const response = await fileService.getPresignedUrl(file.name);
-                    await fileService.uploadToMinio(file, response.data);
-                    alert(`${file.name} 업로드 완료`);
+                    fileService.uploadFileAndSaveInfo(file);
                 }
             };
             fileInput.click();
