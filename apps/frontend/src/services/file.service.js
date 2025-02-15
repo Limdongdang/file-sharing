@@ -16,6 +16,7 @@ const getFiles = () => {
     return instance.get(URL_GET_FILES);
 }
 
+// 파일 정보 저장
 const URL_SAVE_FILE_INFO = '/file/upload';
 const saveFileInfo = (fileInfo) => {
     return instance.post(URL_SAVE_FILE_INFO, fileInfo);
@@ -47,9 +48,18 @@ const uploadFileAndSaveInfo = async (file) => {
         return { success: false, message: `파일 업로드 중 오류 발생: ${error.message}` };
     }
 }
+
+const getPresignedUrlGetObject = (name) => {
+    return instance.get('/file/download', {
+        params: {
+            name,
+        },
+    });
+}
  
 export default {
     getPresignedUrl,
     getFiles,
     uploadFileAndSaveInfo,
+    getPresignedUrlGetObject,
 };

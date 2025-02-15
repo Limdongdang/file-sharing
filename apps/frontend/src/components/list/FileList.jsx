@@ -53,27 +53,6 @@ const IconWrapper = styled.div`
   height: 24px;
 `;
 
-const FILEDATAEXAMEPLE = [
-  {
-    name: '파일1',
-    type: 'video',
-    size: '1MB',
-    date: '2025.02.13.',
-  },
-  {
-    name: '파일2',
-    type: 'image',
-    size: '2MB',
-    date: '2025.02.12',
-  },
-  {
-    name: '파일3',
-    type: 'document',
-    size: '3MB',
-    date: '2025.02.11',
-  },
-]
-
 // 파일 MIME 타입에 따라 아이콘을 반환하는 함수
 const getFileIconWithMimetype = (mimetype) => {
   if (mimetype.includes('video')) {
@@ -97,11 +76,31 @@ const FormatDate = (isoString) => {
 }
 
 const FileList = () => {
-  const menuItems = [
-    { label: '다운로드', onClick: () => alert('다운로드 클릭됨') },
-    { label: '삭제', onClick: () => alert('삭제 클릭됨') },
-  ];
   const [filelist, setFilelist] = useState([]);
+
+  const handleDownload = async (file) => {
+    try {
+      const response = await fileService.getPresignedUrlGetObject(file.originalname);
+      const url = response.data;
+      
+      // fetch를 이용해 파일을 blob으로 받아오기
+      const res = await fetch(url);
+      const blob = await res.blob();
+      const blobUrl = window.URL.createObjectURL(blob);
+      
+      // 임시 <a> 태그를 생성하여 다운로드 트리거
+      const link = document.createElement('a');
+      link.href = blobUrl;
+      link.setAttribute('download', file.originalname);
+      document.body.appendChild(link);
+      link.click();
+      link.remove();
+      window.URL.revokeObjectURL(blobUrl);
+    } catch (error) {
+      console.error(error);
+      alert('다운로드 중 오류가 발생했습니다.');
+    }
+  };
 
   useEffect(() => {
     const fetchData = async () => {
@@ -123,22 +122,28 @@ const FileList = () => {
             <div key={index} style={{ flex: header.flex }}>{header.name}</div>
             ))}
         </ListHeader>
-        {filelist?.map((data, index) => (
-        <ListItem key={index}>
-            <div style={{ flex: 4, display: 'flex'}}>
-              <IconWrapper>
-                {getFileIconWithMimetype(data.mimetype)}
-              </IconWrapper>
-              <span style={{marginLeft: '8px'}}></span>
-              {data.originalname}
-            </div>
-            <div style={{ flex: 2 }}>{data.size}</div>
-            <div style={{ flex: 2 }}>{FormatDate(data.createdAt)}</div>
-            <div style={{ flex: 1 }}>
-              <DropdownCircle icon={SlOptionsVertical} menuItems={menuItems}/>
-            </div>
-        </ListItem>
-        ))}
+        {filelist?.map((data, index) => {
+          const menuItems = [
+            { label: '다운로드', onClick: () => handleDownload(data) },
+            { label: '삭제', onClick: () => alert('삭제 클릭됨') },
+          ]
+          return (
+            <ListItem key={index}>
+                <div style={{ flex: 4, display: 'flex'}}>
+                  <IconWrapper>
+                    {getFileIconWithMimetype(data.mimetype)}
+                  </IconWrapper>
+                  <span style={{marginLeft: '8px'}}></span>
+                  {data.originalname}
+                </div>
+                <div style={{ flex: 2 }}>{data.size}</div>
+                <div style={{ flex: 2 }}>{FormatDate(data.createdAt)}</div>
+                <div style={{ flex: 1 }}>
+                  <DropdownCircle icon={SlOptionsVertical} menuItems={menuItems}/>
+                </div>
+            </ListItem>
+          );
+        })}
     </List>
   );
 };
