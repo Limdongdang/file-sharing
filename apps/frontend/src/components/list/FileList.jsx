@@ -75,7 +75,7 @@ const FormatDate = (isoString) => {
   return format(date, 'yyyy.MM.dd');
 }
 
-const FileList = () => {
+const FileList = ({ sidebarEvent }) => {
   const [filelist, setFilelist] = useState([]);
 
   const handleDownload = async (file) => {
@@ -125,7 +125,7 @@ const FileList = () => {
       }
     };
     fetchData();
-  }, []);
+  }, [sidebarEvent]);
 
   return (
     <List>

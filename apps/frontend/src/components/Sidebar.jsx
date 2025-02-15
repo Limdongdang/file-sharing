@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useContext, useState } from 'react';
 import styled from 'styled-components';
 import { FaFileAlt, FaFileUpload, FaHome, FaLink, FaShare, FaUpload } from 'react-icons/fa';
 import { RiFolderUploadFill } from "react-icons/ri";
@@ -7,6 +7,7 @@ import { Link } from 'react-router-dom';
 import DropdownMenu from './common/DropdownMenu';
 import Divider from './common/Divider';
 import fileService from '../services/file.service';
+import { AppContext } from '../context/AppContext';
 
 const Container = styled.div`
     width: 20%;
@@ -51,6 +52,9 @@ const Button = styled(Link)`
 
 
 const SideBar = () => {
+    const [isDropdownOpen, setIsDropdownOpen] = useState(false);
+    const { setSidebarEvent } = useContext(AppContext);    
+
     const uploadMenuItems = [
         { icon : FaFileUpload , label: '파일 업로드', onClick: () => handleUploadFile() },
         { icon: RiFolderUploadFill,label: '폴더 업로드', onClick: () => alert('폴더 업로드 클릭됨') },
@@ -64,7 +68,9 @@ const SideBar = () => {
             fileInput.onchange = async (event) => {
                 const file = event.target.files[0];
                 if (file) {
-                    fileService.uploadFileAndSaveInfo(file);
+                    await fileService.uploadFileAndSaveInfo(file);
+                    setIsDropdownOpen(false);
+                    setSidebarEvent('fileUploaded');
                 }
             };
             fileInput.click();
@@ -77,8 +83,14 @@ const SideBar = () => {
     return (
         <Container>
             <SideMenu>
-                <DropdownMenu icon={FaUpload} menuItems={uploadMenuItems} $normal title='업로드' size={16}>
-                </DropdownMenu>
+                <DropdownMenu
+                    icon={FaUpload}
+                    menuItems={uploadMenuItems}
+                    title='업로드'
+                    size={16}
+                    isOpen={isDropdownOpen}
+                    setIsOpen={setIsDropdownOpen}
+                />
                 <Divider></Divider>
                 <Button to={'/'}>
                     <FaHome size={20}/>

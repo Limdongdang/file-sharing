@@ -54,8 +54,7 @@ const MenuItem = styled.div`
   }
 `;
 
-const DropdownMenu = ({ icon: Icon, menuItems, title = '', size=20 }) => {
-  const [isOpen, setIsOpen] = useState(false);
+const DropdownMenu = ({ icon: Icon, menuItems, title = '', size=20, isOpen, setIsOpen }) => {
   const menuRef = useRef(null);
 
   const toggleMenu = () => {
