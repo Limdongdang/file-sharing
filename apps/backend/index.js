@@ -4,8 +4,10 @@ import path from 'path';
 import { sequelize } from './src/model/index.js';
 import { fileURLToPath } from 'url';
 import { File } from './src/model/file.model.js';
+import { User } from './src/model/user.model.js';
 import { specs, swaggerUi } from './src/swagger.js';
 import fileRoutes from './src/routes/file.js';
+import userRoutes from './src/routes/user.js';
 import { initializeMinio } from './src/config/minio.js';
 import corsOptions from './src/config/cors.js';
 
@@ -18,6 +20,7 @@ app.use(express.json());
 // swagger UI 설정
 app.use('/api-docs', swaggerUi.serve, swaggerUi.setup(specs));
 app.use('/file', fileRoutes);
+app.use('/user', userRoutes);
 
 // MySQL 연결
 await sequelize.sync({ force: false })
