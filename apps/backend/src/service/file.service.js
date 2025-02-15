@@ -1,6 +1,7 @@
 // file.service.js
 import { minioClient } from "../config/minio.js";
 import { File } from "../model/file.model.js";
+import { sequelize } from "../model/index.js";
 
 const getFiles = async () => {
     const files = await File.findAll();
@@ -18,6 +19,30 @@ const uploadFile = async (body) => {
         size,
         mimetype,
     });
+}
+
+const removeFile = async (data) => {
+    const transaction = await sequelize.transaction();
+
+    try{
+        await File.destroy({
+            where: {
+                id: data.id, 
+            },
+            transaction,
+        });
+        
+        await minioClient.removeObject('uploads', data.name , (err) => {
+            if (err) {
+                console.log(err);
+            }
+        });
+    
+        await transaction.commit();
+    } catch (error) {
+        await transaction.rollback();
+        throw error;
+    }
 }
 
 const getPresignedUrl = async (name) => {
@@ -44,4 +69,4 @@ const getPresignedUrlGetObject = async (name) => {
     })
 }
         
-export default { getFiles, uploadFile, getPresignedUrl, getPresignedUrlGetObject };
+export default { getFiles, uploadFile, getPresignedUrl, getPresignedUrlGetObject, removeFile };
