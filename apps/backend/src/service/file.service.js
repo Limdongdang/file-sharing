@@ -31,5 +31,17 @@ const getPresignedUrl = async (name) => {
         })
     })
 }
+
+const getPresignedUrlGetObject = async (name) => {
+    return new Promise((resolve, reject) => {
+        minioClient.presignedGetObject('uploads', name, 60, (err, url) => {
+            if (err) {
+                reject(err);
+            } else {
+                resolve(url);
+            }
+        })
+    })
+}
         
-export default { getFiles, uploadFile, getPresignedUrl };
+export default { getFiles, uploadFile, getPresignedUrl, getPresignedUrlGetObject };

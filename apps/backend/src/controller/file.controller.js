@@ -29,3 +29,13 @@ export const getPresignedUrl = async (req, res) => {
         res.status(500).send(error.message);
     }
 }
+
+export const getPresignedUrlGetObject = async (req, res) => {
+    try {
+        const url = await fileService.getPresignedUrlGetObject(req.query.name);
+        res.status(200).send(url);
+    }
+    catch (error) {
+        res.status(500).send(error.message);
+    }
+}
