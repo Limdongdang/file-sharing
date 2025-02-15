@@ -1,9 +1,9 @@
 import React from 'react';
-import duckLogo from '../assets/duck.png';
+import duckLogo from '../../assets/duck.png';
 import styled from 'styled-components';
 import { IoMdSettings } from "react-icons/io";
-import { FaUser, FaUserAlt, FaUserCircle } from 'react-icons/fa';
-import IconButton from './common/IconButton';
+import { FaUserCircle } from 'react-icons/fa';
+import IconButton from '../../components/common/IconButton';
 
 const HeaderContainer = styled.header`
   width: 100%;

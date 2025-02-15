@@ -1,10 +1,10 @@
 import React from 'react';
-import Header from '../components/Header';
-import SideBar from '../components/Sidebar';
-import Content from '../components/Content';
+import Header from './main/Header';
+import SideBar from './main/Sidebar';
+import Content from './main/Content';
 import { Outlet } from 'react-router-dom';
 
-const Layout = () => {
+const MainLayout = () => {
   return (
     <>
         <Header />
@@ -18,4 +18,4 @@ const Layout = () => {
   );
 };
 
-export default Layout;
+export default MainLayout;

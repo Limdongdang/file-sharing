@@ -4,10 +4,10 @@ import { FaFileAlt, FaFileUpload, FaHome, FaLink, FaShare, FaUpload } from 'reac
 import { RiFolderUploadFill } from "react-icons/ri";
 import { IoFileTrayStackedSharp } from "react-icons/io5";
 import { Link } from 'react-router-dom';
-import DropdownMenu from './common/DropdownMenu';
-import Divider from './common/Divider';
-import fileService from '../services/file.service';
-import { AppContext } from '../context/AppContext';
+import DropdownMenu from '../../components/common/DropdownMenu';
+import Divider from '../../components/common/Divider';
+import fileService from '../../services/file.service';
+import { AppContext } from '../../context/AppContext';
 
 const Container = styled.div`
     width: 20%;
