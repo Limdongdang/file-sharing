@@ -9,9 +9,11 @@ const Layout = () => {
     <>
         <Header />
         <SideBar />
-        <Content>
-          <Outlet />
-        </Content>
+        <div style={{ minWidth: '800px' }}>
+          <Content>
+            <Outlet />
+          </Content>
+        </div>
     </>
   );
 };

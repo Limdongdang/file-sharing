@@ -22,6 +22,18 @@ const saveFileInfo = (fileInfo) => {
     return instance.post(URL_SAVE_FILE_INFO, fileInfo);
 }
 
+// 파일 삭제
+const URL_DELETE_FILE = '/file/remove';
+const removeFile = (data) => {
+    console.log(data);
+    return instance.delete(URL_DELETE_FILE, {
+        params: {
+            name: data.originalname,
+            id: data.id,
+        },
+    });
+}
+
 //minio 업로드
 const uploadToMinio = (file, url) => {
     return axios.put(url, file, {
@@ -62,4 +74,5 @@ export default {
     getFiles,
     uploadFileAndSaveInfo,
     getPresignedUrlGetObject,
+    removeFile,
 };

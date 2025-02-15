@@ -102,6 +102,18 @@ const FileList = () => {
     }
   };
 
+  const handleRemove = async (file) => {
+    try {
+      console.log("remove file", file);
+      await fileService.removeFile(file);
+      alert('파일이 삭제되었습니다.');
+      setFilelist(filelist.filter((item) => item.originalname !== file.originalname));
+    } catch (error) {
+      console.error(error);
+      alert('파일 삭제 중 오류가 발생했습니다.');
+    }
+  }
+
   useEffect(() => {
     const fetchData = async () => {
       try{
@@ -125,7 +137,7 @@ const FileList = () => {
         {filelist?.map((data, index) => {
           const menuItems = [
             { label: '다운로드', onClick: () => handleDownload(data) },
-            { label: '삭제', onClick: () => alert('삭제 클릭됨') },
+            { label: '삭제', onClick: () => handleRemove(data) },
           ]
           return (
             <ListItem key={index}>
