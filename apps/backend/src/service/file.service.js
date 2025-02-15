@@ -1,4 +1,5 @@
 // file.service.js
+import { minioClient } from "../config/minio.js";
 import { File } from "../model/file.model.js";
 
 const getFiles = async () => {
@@ -20,11 +21,14 @@ const uploadFile = async (body) => {
 }
 
 const getPresignedUrl = async (name) => {
-    await minioClient.presignedPutObject('uploads', req.query.name, 24 * 60 * 60, (err, url) => {
-        if (err) throw err
-    
-        const fixedUrl = url.replace('http://minio:9000', 'http://localhost:9002');
-        res.send(fixedUrl);
+    return new Promise((resolve, reject) => {
+        minioClient.presignedPutObject('uploads', name, 24 * 60 * 60, (err, url) => {
+            if (err) {
+                reject(err);
+            } else {
+                resolve(url);
+            }
+        })
     })
 }
         
