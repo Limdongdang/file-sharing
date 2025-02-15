@@ -6,6 +6,7 @@ import { IoFileTrayStackedSharp } from "react-icons/io5";
 import { Link } from 'react-router-dom';
 import DropdownMenu from './common/DropdownMenu';
 import Divider from './common/Divider';
+import fileService from '../services/file.service';
 
 const Container = styled.div`
     width: 20%;
@@ -51,32 +52,51 @@ const Button = styled(Link)`
 
 const SideBar = () => {
     const uploadMenuItems = [
-        { icon : FaFileUpload , label: '파일 업로드', onClick: () => alert('파일 업로드 클릭됨') },
+        { icon : FaFileUpload , label: '파일 업로드', onClick: () => handleUploadFile() },
         { icon: RiFolderUploadFill,label: '폴더 업로드', onClick: () => alert('폴더 업로드 클릭됨') },
         { icon: FaLink ,label: '링크 업로드', onClick: () => alert('링크 업로드 클릭됨') },
     ];
 
-  return (
-    <Container>
-        <SideMenu>
-            <DropdownMenu icon={FaUpload} menuItems={uploadMenuItems} $normal title='업로드' size={16}>
-            </DropdownMenu>
-            <Divider></Divider>
-            <Button to={'/'}>
-                <FaHome size={20}/>
-                홈
-            </Button>
-            <Button to={'/myfiles'}>
-                <IoFileTrayStackedSharp size={20}/>
-                내 파일함
-            </Button>
-            <Button to={'/sharedfiles'}>
-                <FaShare size={20}/>
-                공유 파일함
-            </Button>
-        </SideMenu>
-    </Container>
-  );
+    const handleUploadFile = () => {
+        try {
+            const fileInput = document.createElement('input');
+            fileInput.type = 'file';
+            fileInput.onchange = async (event) => {
+                const file = event.target.files[0];
+                if (file) {
+                    const response = await fileService.getPresignedUrl(file.name);
+                    await fileService.uploadToMinio(file, response.data);
+                    alert(`${file.name} 업로드 완료`);
+                }
+            };
+            fileInput.click();
+        } catch (error) {
+            console.error('파일 업로드 중 오류 발생:', error);
+            alert('파일 업로드 중 오류가 발생했습니다.');
+        }
+    };
+
+    return (
+        <Container>
+            <SideMenu>
+                <DropdownMenu icon={FaUpload} menuItems={uploadMenuItems} $normal title='업로드' size={16}>
+                </DropdownMenu>
+                <Divider></Divider>
+                <Button to={'/'}>
+                    <FaHome size={20}/>
+                    홈
+                </Button>
+                <Button to={'/myfiles'}>
+                    <IoFileTrayStackedSharp size={20}/>
+                    내 파일함
+                </Button>
+                <Button to={'/sharedfiles'}>
+                    <FaShare size={20}/>
+                    공유 파일함
+                </Button>
+            </SideMenu>
+        </Container>
+    );
 };
 
 export default SideBar;
