@@ -3,6 +3,23 @@ import { User } from "../model/user.model.js";
 import { sequelize } from "../model/index.js";
 import jwt from 'jsonwebtoken';
 
+const setCookie = (res, name, token, options = {}) => {
+    res.cookie(name, token, {
+        httpOnly: true,
+        secure: process.env.NODE_ENV === 'production',
+        sameSite: 'strict',
+        ...options,
+    });
+}
+
+const clearCookie = (res, name) => {
+    res.clearCookie(name, {
+        httpOnly: true,
+        secure: process.env.NODE_ENV === 'production',
+        sameSite: 'strict',
+    });
+}
+
 const generateAccessToken = (user) => {
     const payload = {
         id: user.id,
@@ -72,4 +89,13 @@ const sendVerificationEmail = async (email) => {
 }
 
         
-export default { registerUser, findUser, generateAccessToken, loginUser, verifyToken, generateRefreshToken };
+export default { 
+    registerUser, 
+    findUser, 
+    generateAccessToken, 
+    loginUser, 
+    verifyToken, 
+    generateRefreshToken, 
+    setCookie,
+    clearCookie,
+};

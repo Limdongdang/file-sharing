@@ -11,17 +11,9 @@ export const loginUser = async (req, res) => {
         const accesstoken = userService.generateAccessToken(result);
         const refreshtoken = userService.generateRefreshToken(result);
         
-        res.cookie('accessToken', accesstoken, { 
-            httpOnly: true,
-            secure: false, // production 환경에서는 true로 변경
-            sameSite: 'strict',
-        });
+        userService.setCookie(res, 'accesstoken', accesstoken);
+        userService.setCookie(res, 'refreshtoken', refreshtoken);
 
-        res.cookie('refreshToken', refreshtoken, { 
-            httpOnly: true,
-            secure: false, // production 환경에서는 true로 변경
-            sameSite: 'strict',
-        });
         res.status(200).send({ user: result.dataValues });
     }
     catch (error) {
@@ -31,17 +23,8 @@ export const loginUser = async (req, res) => {
 
 export const logoutUser = async (req, res) => {
     try {
-        res.clearCookie('refreshToken', {
-            httpOnly: true,
-            secure: false, // production 환경에서는 true로 변경
-            sameSite: 'strict',
-        });
-
-        res.clearCookie('accessToken', {
-            httpOnly: true,
-            secure: false, // production 환경에서는 true로 변경
-            sameSite: 'strict',
-        });
+        userService.clearCookie(res, 'accessToken');
+        userService.clearCookie(res, 'refreshToken');
 
         res.status(200).send('로그아웃 되었습니다.');
     }
@@ -56,11 +39,9 @@ export const refreshAccessToken = async (req, res) => {
         const decoded = userService.verifyToken(token, process.env.REFRESH_TOKEN_SECRET);
         const user = await userService.findUser(decoded.username);
         const newToken = userService.generateAccessToken(user);
-        res.cookie('accessToken', newToken, {
-            httpOnly: true,
-            secure: false, // production 환경에서는 true로 변경
-            sameSite: 'strict',
-        });
+        
+        userService.setCookie(res, 'accessToken', newToken);
+
         res.status(200).send({ user: user.dataValues });
     } catch (error) {
         res.status(500).send(error.message);
@@ -72,6 +53,11 @@ export const authenticateUser = async (req, res) => {
         const token = req.cookies.accessToken;
         const decoded = userService.verifyToken(token, process.env.ACCESS_TOKEN_SECRET);
         const user = await userService.findUser(decoded.username);
+
+        if(!user) {
+            return res.status(401).send('토큰이 유효하지 않습니다');
+        }
+
         res.status(200).send({ user: user.dataValues });
     }
     catch (error) {
