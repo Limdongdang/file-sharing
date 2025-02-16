@@ -10,12 +10,14 @@ import fileRoutes from './src/routes/file.js';
 import userRoutes from './src/routes/user.js';
 import { initializeMinio } from './src/config/minio.js';
 import corsOptions from './src/config/cors.js';
+import cookieParser from 'cookie-parser';
 
 const app = express();
 const port = 3000;
 
 app.use(cors(corsOptions));
 app.use(express.json());
+app.use(cookieParser());
 
 // swagger UI 설정
 app.use('/api-docs', swaggerUi.serve, swaggerUi.setup(specs));

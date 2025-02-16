@@ -2,7 +2,6 @@ import userService from "../service/user.service.js";
 
 export const loginUser = async (req, res) => {
     try {
-        console.log(req.body);
         const result = await userService.loginUser(req.body);
 
         if(result === null) {
@@ -10,7 +9,24 @@ export const loginUser = async (req, res) => {
         };
 
         const token = userService.generateToken(result);
-        res.status(200).send({ token });
+        res.cookie('token', token, { 
+            httpOnly: true,
+            secure: false, // production 환경에서는 true로 변경
+            sameSite: 'strict',
+        });
+        res.status(200).send({ user: result.dataValues });
+    }
+    catch (error) {
+        res.status(500).send(error.message);
+    }
+}
+
+export const authenticateUser = async (req, res) => {
+    try {
+        const token = req.cookies.token;
+        const decoded = userService.verifyToken(token);
+        const user = await userService.findUser(decoded.username);
+        res.status(200).send({ user: user.dataValues });
     }
     catch (error) {
         res.status(500).send(error.message);
@@ -40,3 +56,4 @@ export const sendVerificationEmail = async (req, res) => {
         res.status(500).send(error.message);
     }
 }
+

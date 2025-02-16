@@ -17,6 +17,12 @@ const generateToken = (user) => {
     return jwt.sign(payload, secret, options);
 }
 
+const verifyToken = (token) => {
+    const secret = "secret"; // 환경 변수로 추후 변경
+    return jwt.verify(token, secret);
+}
+
+
 const registerUser = async (username, password, email) => {
     await sequelize.transaction(async (t) => {
         await User.create({
@@ -32,6 +38,7 @@ const findUser = async (username) => {
         where: {
             username,
         },
+        attributes: ['id', 'username', 'email'],
     });
     return user;
 }
@@ -42,6 +49,7 @@ const loginUser = async (data) => {
             username : data.username,
             password : data.password,
         },
+        attributes: ['id', 'username', 'email'],
     });
     return user;
 }
@@ -51,4 +59,4 @@ const sendVerificationEmail = async (email) => {
 }
 
         
-export default { registerUser, findUser, generateToken, loginUser };
+export default { registerUser, findUser, generateToken, loginUser, verifyToken };
