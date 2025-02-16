@@ -1,4 +1,5 @@
 // index.jsx
+import Protect from '@components/auth/Protect';
 import Login from '../layout/auth/Login';
 import Register from '../layout/auth/Register';
 import LoginLayout from '../layout/LoginLayout';
@@ -9,27 +10,36 @@ import SharedFiles from '../pages/SharedFiles';
 
 const routes = [
   {
-    path: '/',
-    element: <MainLayout />,
+    element: <Protect />,
     children: [
-      { path: '', element: <Home /> },
-      { path: 'myfiles', element: <MyFiles /> },
-      { path: 'sharedfiles', element: <SharedFiles /> },
-    ],
+      {
+        path: '/',
+        element: <MainLayout />,
+        children: [
+          { path: '', element: <Home /> },
+          { path: 'myfiles', element: <MyFiles /> },
+          { path: 'sharedfiles', element: <SharedFiles /> },
+        ],
+      },
+    ]
   },
   {
-    path: '/login',
-    element: <LoginLayout />,
     children: [
-      { path: '', element: <Login /> },
-    ],
-  },
-  {
-    path: '/register',
-    element: <LoginLayout />,
-    children: [
-      { path: '', element: <Register /> },
-    ],
+      {
+        path: '/login',
+        element: <LoginLayout />,
+        children: [
+          { path: '', element: <Login /> },
+        ],
+      },
+      {
+        path: '/register',
+        element: <LoginLayout />,
+        children: [
+          { path: '', element: <Register /> },
+        ],
+      },
+    ]
   }
 ];
 

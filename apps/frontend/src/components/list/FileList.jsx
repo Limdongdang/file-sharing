@@ -4,7 +4,7 @@ import { SlOptionsVertical } from "react-icons/sl";
 import DropdownMenu from '../common/DropdownMenu';
 import fileService from '../../services/file.service';
 import { parseISO, format } from 'date-fns';
-import DropdownCircle from '../common/DropdownCircle';
+import DropdownCircle from '@components/common/DropdownCircle'; 
 
 const List = styled.div`
   list-style: none;

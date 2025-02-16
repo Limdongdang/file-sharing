@@ -4,6 +4,10 @@ import styled from 'styled-components';
 import { IoMdSettings } from "react-icons/io";
 import { FaUserCircle } from 'react-icons/fa';
 import IconButton from '../../components/common/IconButton';
+import { useDispatch } from 'react-redux';
+import { logout } from '../../store/slices/auth.slice';
+import { useNavigate } from 'react-router-dom';
+import DropdownCircle from '@components/common/DropdownCircle';
 
 const HeaderContainer = styled.header`
   width: 100%;
@@ -49,6 +53,23 @@ const NavItem = styled.li`
 `;
 
 const Header = () => {
+  const dispatch = useDispatch();
+  const navigate = useNavigate();
+
+  const handleLogout = () => {
+    localStorage.removeItem('token');
+    dispatch(logout());
+    navigate('/login');
+  };
+
+  const menuItems = [
+    {
+      label: '로그아웃',
+      onClick: handleLogout
+    }
+  ]
+
+
   return (
     <HeaderContainer>
         <Logo href="#home">
@@ -56,7 +77,7 @@ const Header = () => {
         </Logo>
         <Nav>
         <NavItems>
-            <NavItem><IconButton icon={FaUserCircle} size={24}></IconButton></NavItem>
+            <NavItem><DropdownCircle icon={FaUserCircle} menuItems={menuItems} size={24}></DropdownCircle></NavItem>
             <NavItem><IconButton icon={IoMdSettings} size={24}></IconButton></NavItem>
         </NavItems>
         </Nav>
