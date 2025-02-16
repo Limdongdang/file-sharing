@@ -8,6 +8,7 @@ import { useDispatch } from 'react-redux';
 import { clearAuth } from '../../store/slices/auth.slice';
 import { useNavigate } from 'react-router-dom';
 import DropdownCircle from '@components/common/DropdownCircle';
+import userService from '@services/user.service';
 
 const HeaderContainer = styled.header`
   width: 100%;
@@ -56,10 +57,14 @@ const Header = () => {
   const dispatch = useDispatch();
   const navigate = useNavigate();
 
-  const handleLogout = () => {
-    localStorage.removeItem('token');
-    dispatch(clearAuth());
-    navigate('/login');
+  const handleLogout = async () => {
+    try{
+      await userService.logoutUser();
+      dispatch(clearAuth());
+      navigate('/login');
+    } catch (error) {
+      console.error('로그아웃 중 에러 발생:', error);
+    }
   };
 
   const menuItems = [

@@ -31,7 +31,7 @@ export const checkAuthStatus = () => async (dispatch) => {
             dispatch(clearAuth());
         }
     } catch (error) {
-        console.error('인증 상태 확인 중 에러 발생:', error);
+        dispatch(clearAuth());
     }
 } 
 
