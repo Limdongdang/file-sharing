@@ -1,7 +1,10 @@
 import React, { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import styled from 'styled-components';
-
+import userService from '../../services/user.service';
+import { useDispatch } from 'react-redux';
+import { loginSuccess } from '../../store/slices/auth.slice';
+ 
 const Container = styled.div`
   width: 100%;
   height: 100vh;
@@ -64,19 +67,34 @@ const LogoImage = styled.img`
 `;
 
 const Login = () => {
+  const dispatch = useDispatch();
   const navigate = useNavigate();
-  const [userId, setUserId] = useState('');
+  const [username, setUsername] = useState('');
   const [password, setPassword] = useState('');
 
   const toggleForm = () => {
     navigate('/register');
   };
 
-  const handleSubmit = (event) => {
+  const handleSubmit = async (event) => {
     event.preventDefault();
+
     try {
-      console.log('userId:', userId);
-      console.log('password:', password);
+      const body = {
+        username: username,
+        password: password,
+      }
+      const response = await userService.loginUser(body);
+      if (response.status !== 200) {
+        throw new Error('로그인에 실패했습니다.');
+      } else{
+        const user = { username: "test"};
+        const token = response.data.token;
+        dispatch(loginSuccess({ user, token }));
+        localStorage.setItem('token', token);
+        navigate('/');
+      }
+      
     } catch (error) {
       console.error('로그인 중 에러 발생:', error);
     }
@@ -87,7 +105,7 @@ const Login = () => {
       <Form onSubmit={handleSubmit}>
         <LogoImage src='/duck.png' alt='Logo' />
         <h2>Hide On Stash</h2>
-        <Input type="text" placeholder="ID" value={userId} onChange={(e) => setUserId(e.target.value)}/>
+        <Input type="text" placeholder="Username" value={username} onChange={(e) => setUsername(e.target.value)}/>
         <Input type="password" placeholder="Password" value={password} onChange={(e) => setPassword(e.target.value)}/>
         <Button type="submit">Login</Button>
         <ToggleButton onClick={toggleForm}>

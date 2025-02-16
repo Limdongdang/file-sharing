@@ -1,6 +1,6 @@
 // index.jsx
-import Login from '../layout/login/Login';
-import Register from '../layout/login/Register';
+import Login from '../layout/auth/Login';
+import Register from '../layout/auth/Register';
 import LoginLayout from '../layout/LoginLayout';
 import MainLayout from '../layout/MainLayout';
 import Home from '../pages/Home';
