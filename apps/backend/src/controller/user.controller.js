@@ -51,16 +51,12 @@ export const refreshAccessToken = async (req, res) => {
 export const authenticateUser = async (req, res) => {
     try {
         const token = req.cookies.accessToken;
-        console.log("step 1", token);
-        const decoded = userService.verifyToken(token, process.env.ACCESS_TOKEN_SECRET);
-        console.log("step 2", decoded);
-        const user = await userService.findUser(decoded.username);
-        console.log("step 3", user);
-
-        if(!user) {
-            return res.status(401).send('토큰이 유효하지 않습니다');
+        if(!token) {
+            return res.status(403).send('토큰이 없습니다');
         }
-
+        const decoded = userService.verifyToken(token, process.env.ACCESS_TOKEN_SECRET);
+        const user = await userService.findUser(decoded.username);
+        
         res.status(200).send({ user: user.dataValues, expiredAt: decoded.exp });
     }
     catch (error) {
