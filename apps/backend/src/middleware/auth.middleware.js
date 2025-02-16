@@ -7,7 +7,7 @@ const authMiddleware = (req, res, next) => {
     }
 
     try {
-        const decoded = jwt.verify(token, "secret"); // 환경 변수로 추후 변경
+        const decoded = jwt.verify(token, "access_secret"); // 환경 변수로 추후 변경
         req.user = decoded;
         next();
     } catch (error) {

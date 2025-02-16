@@ -3,13 +3,13 @@ import { User } from "../model/user.model.js";
 import { sequelize } from "../model/index.js";
 import jwt from 'jsonwebtoken';
 
-const generateToken = (user) => {
+const generateAccessToken = (user) => {
     const payload = {
         id: user.id,
         username: user.username,
         email: user.email,
     };
-    const secret = "secret"; // 환경 변수로 추후 변경
+    const secret = "access_secret"; // 환경 변수로 추후 변경
     const options = {
         expiresIn: '1h',
     };
@@ -17,8 +17,21 @@ const generateToken = (user) => {
     return jwt.sign(payload, secret, options);
 }
 
-const verifyToken = (token) => {
-    const secret = "secret"; // 환경 변수로 추후 변경
+const generateRefreshToken = (user) => {    
+    const payload = {
+        id: user.id,
+        username: user.username,
+        email: user.email,
+    };
+    const secret = "refresh_secret"; // 환경 변수로 추후 변경
+    const options = {
+        expiresIn: '7d',
+    };
+
+    return jwt.sign(payload, secret, options);
+}
+
+const verifyToken = (token, secret) => {
     return jwt.verify(token, secret);
 }
 
@@ -58,4 +71,4 @@ const sendVerificationEmail = async (email) => {
 }
 
         
-export default { registerUser, findUser, generateToken, loginUser, verifyToken };
+export default { registerUser, findUser, generateAccessToken, loginUser, verifyToken, generateRefreshToken };
