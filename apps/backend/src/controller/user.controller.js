@@ -8,15 +8,16 @@ export const loginUser = async (req, res) => {
             throw new Error('사용자 정보가 일치하지 않습니다.');
         };
 
-        const token = userService.generateAccessToken(result);
-
-        res.cookie('accessToken', token, { 
+        const accesstoken = userService.generateAccessToken(result);
+        const refreshtoken = userService.generateRefreshToken(result);
+        
+        res.cookie('accessToken', accesstoken, { 
             httpOnly: true,
             secure: false, // production 환경에서는 true로 변경
             sameSite: 'strict',
         });
 
-        res.cookie('refreshToken', token, { 
+        res.cookie('refreshToken', refreshtoken, { 
             httpOnly: true,
             secure: false, // production 환경에서는 true로 변경
             sameSite: 'strict',
@@ -52,7 +53,7 @@ export const logoutUser = async (req, res) => {
 export const refreshAccessToken = async (req, res) => {
     try {
         const token = req.cookies.refreshToken;
-        const decoded = userService.verifyToken(token, 'refresh_secret');
+        const decoded = userService.verifyToken(token, process.env.REFRESH_TOKEN_SECRET);
         const user = await userService.findUser(decoded.username);
         const newToken = userService.generateAccessToken(user);
         res.cookie('accessToken', newToken, {
@@ -69,7 +70,7 @@ export const refreshAccessToken = async (req, res) => {
 export const authenticateUser = async (req, res) => {
     try {
         const token = req.cookies.accessToken;
-        const decoded = userService.verifyToken(token, 'access_secret');
+        const decoded = userService.verifyToken(token, process.env.ACCESS_TOKEN_SECRET);
         const user = await userService.findUser(decoded.username);
         res.status(200).send({ user: user.dataValues });
     }
