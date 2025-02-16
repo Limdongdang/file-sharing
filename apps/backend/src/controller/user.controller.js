@@ -11,8 +11,8 @@ export const loginUser = async (req, res) => {
         const accesstoken = userService.generateAccessToken(result);
         const refreshtoken = userService.generateRefreshToken(result);
         
-        userService.setCookie(res, 'accesstoken', accesstoken);
-        userService.setCookie(res, 'refreshtoken', refreshtoken);
+        userService.setCookie(res, 'accessToken', accesstoken);
+        userService.setCookie(res, 'refreshToken', refreshtoken);
 
         res.status(200).send({ user: result.dataValues });
     }
@@ -51,17 +51,26 @@ export const refreshAccessToken = async (req, res) => {
 export const authenticateUser = async (req, res) => {
     try {
         const token = req.cookies.accessToken;
+        console.log("step 1", token);
         const decoded = userService.verifyToken(token, process.env.ACCESS_TOKEN_SECRET);
+        console.log("step 2", decoded);
         const user = await userService.findUser(decoded.username);
+        console.log("step 3", user);
 
         if(!user) {
             return res.status(401).send('토큰이 유효하지 않습니다');
         }
 
-        res.status(200).send({ user: user.dataValues });
+        res.status(200).send({ user: user.dataValues, expiredAt: decoded.exp });
     }
     catch (error) {
-        res.status(500).send(error.message);
+        if (error.name === 'TokenExpiredError') {
+            return res.status(401).send('토큰이 만료되었습니다');
+        } else if (error.name === 'JsonWebTokenError') {
+            return res.status(401).send('토큰이 유효하지 않습니다');
+        } else {
+            res.status(500).send('서버 오류가 발생했습니다');
+        }
     }
 }
 
