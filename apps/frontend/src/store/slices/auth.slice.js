@@ -22,7 +22,6 @@ const authSlice = createSlice({
 });
 
 export const checkAuthStatus = () => async (dispatch) => {
-    console.log("SHOW");
     try{
         const response = await userService.authenticateUser();
 
@@ -32,6 +31,9 @@ export const checkAuthStatus = () => async (dispatch) => {
     } catch (error) {
         if(error.response.status === 401) {
             dispatch(refreshAccessToken());
+        }
+        else {
+            dispatch(clearAuth());
         }
     }
 }

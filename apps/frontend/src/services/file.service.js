@@ -1,4 +1,4 @@
-import { instance } from "./config";
+import instance from '../interceptors/response.interceptor';
 import axios from 'axios';
 
 const URL_GET_PRESIGNEDURL = '/file/presigned-url';

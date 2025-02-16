@@ -9,6 +9,7 @@
             "@services/*": ["services/*"],
             "@store/*": ["store/*"],
             "@routes/*": ["routes/*"],
+            "@interceptors/*": ["interceptors/*"],
         },
     },
     "include": ["src"]
