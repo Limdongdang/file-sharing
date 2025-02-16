@@ -21,6 +21,20 @@ export const loginUser = async (req, res) => {
     }
 }
 
+export const logoutUser = async (req, res) => {
+    try {
+        res.clearCookie('token', {
+            httpOnly: true,
+            secure: false, // production 환경에서는 true로 변경
+            sameSite: 'strict',
+        });
+        res.status(200).send('로그아웃 되었습니다.');
+    }
+    catch (error) {
+        res.status(500).send(error.message);
+    }
+}
+
 export const authenticateUser = async (req, res) => {
     try {
         const token = req.cookies.token;

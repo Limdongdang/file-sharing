@@ -22,7 +22,6 @@ const verifyToken = (token) => {
     return jwt.verify(token, secret);
 }
 
-
 const registerUser = async (username, password, email) => {
     await sequelize.transaction(async (t) => {
         await User.create({
