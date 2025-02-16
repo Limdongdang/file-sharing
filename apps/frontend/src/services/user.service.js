@@ -14,9 +14,15 @@ const URL_POST_LOGOUT = '/user/logout';
 const logoutUser = () => {
     return instance.post(URL_POST_LOGOUT);
 }
+
+const URL_POST_REFRESH = '/user/refresh';
+const refreshAccessToken = () => {
+    return instance.post(URL_POST_REFRESH);
+}
  
 export default {
     loginUser,
     authenticateUser,
     logoutUser,
+    refreshAccessToken,
 };

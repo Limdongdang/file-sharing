@@ -89,9 +89,7 @@ const Login = () => {
       if (response.status !== 200) {
         throw new Error('로그인에 실패했습니다.');
       } else{
-        const user = { username: "test"};
-        const token = response.data.token;
-        dispatch(setAuth({ user, token }));
+        dispatch(setAuth({ user: response.data.user }));
         navigate('/');
       }
       

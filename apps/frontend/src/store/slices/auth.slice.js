@@ -22,9 +22,23 @@ const authSlice = createSlice({
 });
 
 export const checkAuthStatus = () => async (dispatch) => {
+    console.log("SHOW");
     try{
         const response = await userService.authenticateUser();
 
+        if(response.status === 200) {
+            dispatch(setAuth({ user: response.data.user }));
+        } 
+    } catch (error) {
+        if(error.response.status === 401) {
+            dispatch(refreshAccessToken());
+        }
+    }
+}
+
+export const refreshAccessToken = () => async (dispatch) => {
+    try {
+        const response = await userService.refreshAccessToken();
         if(response.status === 200) {
             dispatch(setAuth({ user: response.data.user }));
         } else {
@@ -33,7 +47,7 @@ export const checkAuthStatus = () => async (dispatch) => {
     } catch (error) {
         dispatch(clearAuth());
     }
-} 
+}
 
 export const { setAuth, clearAuth } = authSlice.actions;
 export default authSlice.reducer;
