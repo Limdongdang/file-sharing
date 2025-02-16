@@ -3,7 +3,7 @@ import { useNavigate } from 'react-router-dom';
 import styled from 'styled-components';
 import userService from '../../services/user.service';
 import { useDispatch } from 'react-redux';
-import { loginSuccess } from '../../store/slices/auth.slice';
+import { setAuth } from '../../store/slices/auth.slice';
  
 const Container = styled.div`
   width: 100%;
@@ -85,13 +85,13 @@ const Login = () => {
         password: password,
       }
       const response = await userService.loginUser(body);
+      
       if (response.status !== 200) {
         throw new Error('로그인에 실패했습니다.');
       } else{
         const user = { username: "test"};
         const token = response.data.token;
-        dispatch(loginSuccess({ user, token }));
-        localStorage.setItem('token', token);
+        dispatch(setAuth({ user, token }));
         navigate('/');
       }
       

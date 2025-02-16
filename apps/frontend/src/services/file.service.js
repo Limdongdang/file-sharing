@@ -25,7 +25,6 @@ const saveFileInfo = (fileInfo) => {
 // 파일 삭제
 const URL_DELETE_FILE = '/file/remove';
 const removeFile = (data) => {
-    console.log(data);
     return instance.delete(URL_DELETE_FILE, {
         params: {
             name: data.originalname,

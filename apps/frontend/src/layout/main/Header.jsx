@@ -5,7 +5,7 @@ import { IoMdSettings } from "react-icons/io";
 import { FaUserCircle } from 'react-icons/fa';
 import IconButton from '../../components/common/IconButton';
 import { useDispatch } from 'react-redux';
-import { logout } from '../../store/slices/auth.slice';
+import { clearAuth } from '../../store/slices/auth.slice';
 import { useNavigate } from 'react-router-dom';
 import DropdownCircle from '@components/common/DropdownCircle';
 
@@ -58,7 +58,7 @@ const Header = () => {
 
   const handleLogout = () => {
     localStorage.removeItem('token');
-    dispatch(logout());
+    dispatch(clearAuth());
     navigate('/login');
   };
 

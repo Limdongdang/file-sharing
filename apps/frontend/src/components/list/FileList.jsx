@@ -104,7 +104,6 @@ const FileList = ({ sidebarEvent }) => {
 
   const handleRemove = async (file) => {
     try {
-      console.log("remove file", file);
       await fileService.removeFile(file);
       alert('파일이 삭제되었습니다.');
       setFilelist(filelist.filter((item) => item.originalname !== file.originalname));
@@ -118,7 +117,6 @@ const FileList = ({ sidebarEvent }) => {
     const fetchData = async () => {
       try{
         const filelist = await fileService.getFiles();
-        console.log(filelist);
         setFilelist(filelist.data);
       } catch (error) {
         console.error(error);

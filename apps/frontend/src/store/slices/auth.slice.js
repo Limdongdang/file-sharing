@@ -1,27 +1,39 @@
 import { createSlice } from '@reduxjs/toolkit';
+import userService from '@services/user.service';
 
 const initialState = {
-    isAuthenticated: false,
+    isAuthenticated: null,
     user: null,
-    token: null,
 };
 
 const authSlice = createSlice({
     name: 'auth',
     initialState,
     reducers: {
-        loginSuccess : (state, action) => {
+        setAuth : (state, action) => {
             state.user = action.payload.user;
-            state.token = action.payload.token;
             state.isAuthenticated = true;
         },
-        logout : (state) => {
+        clearAuth : (state) => {
             state.user = null;
-            state.token = null;
             state.isAuthenticated = false;
         },
     },
 });
 
-export const { loginSuccess, logout } = authSlice.actions;
+export const checkAuthStatus = () => async (dispatch) => {
+    try{
+        const response = await userService.authenticateUser();
+
+        if(response.status === 200) {
+            dispatch(setAuth({ user: response.data.user }));
+        } else {
+            dispatch(clearAuth());
+        }
+    } catch (error) {
+        console.error('인증 상태 확인 중 에러 발생:', error);
+    }
+} 
+
+export const { setAuth, clearAuth } = authSlice.actions;
 export default authSlice.reducer;

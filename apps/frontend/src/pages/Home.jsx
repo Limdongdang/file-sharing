@@ -10,10 +10,6 @@ const Container = styled.div`
 const Home = () => {
   const { sidebarEvent } = useContext(AppContext);
 
-  useEffect(() => {
-    console.log('sidebarEvent:', sidebarEvent);
-  }, [sidebarEvent]);
-
   return (
     <Container>
       <h3>내 파일</h3>

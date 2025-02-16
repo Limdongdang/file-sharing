@@ -42,7 +42,6 @@ export const getPresignedUrlGetObject = async (req, res) => {
 
 export const removeFile = async (req, res) => {
     try {
-        console.log(req.query);
         await fileService.removeFile(req.query);
         res.status(200).send('파일 삭제 성공');
     }
