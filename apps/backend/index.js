@@ -1,3 +1,5 @@
+import dotenv from 'dotenv';
+dotenv.config();
 import express from 'express';
 import cors from 'cors';
 import path from 'path';
@@ -9,15 +11,12 @@ import userRoutes from './src/routes/user.js';
 import { initializeMinio } from './src/config/minio.js';
 import corsOptions from './src/config/cors.js';
 import cookieParser from 'cookie-parser';
-import dotenv from 'dotenv';
 
 import { User } from './src/model/user.model.js';
 import { File } from './src/model/file.model.js';
 
 const app = express();
 const port = 3000;
-
-dotenv.config({path: '../../.env'});
 
 app.use(cors(corsOptions));
 app.use(express.json());
