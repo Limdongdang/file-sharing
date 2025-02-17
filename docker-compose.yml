@@ -12,7 +12,7 @@ services:
     container_name: hideonstash-backend
     working_dir: /app
     volumes:
-      - ./backend:/app
+      - ./apps/backend:/app
     ports:
       - "3000:3000"
     command: npm start
