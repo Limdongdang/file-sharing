@@ -1,23 +1,15 @@
-# Use the official Node.js image.
-FROM node:14
+# Build the frontend app
+FROM node:18 AS build
 
-# Create and change to the app directory.
-WORKDIR /usr/src/app
+WORKDIR /app
 
-# Copy application dependency manifests to the container image.
-COPY package*.json ./
-
-# Install dependencies.
+COPY package.json ./
 RUN npm install
 
-# Copy local code to the container image.
 COPY . .
-
-# Build the React app
 RUN npm run build
 
-# Install serve to serve the build
-RUN npm install -g serve
+# Production stage
+FROM nginx:alpine
 
-# Run the web service on container startup.
-CMD ["serve", "-s", "build"]
+COPY --from=build /app/dist /usr/share/nginx/hideonstash
