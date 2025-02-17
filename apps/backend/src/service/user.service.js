@@ -28,8 +28,7 @@ const generateAccessToken = (user) => {
     };
     const secret = process.env.ACCESS_TOKEN_SECRET;
     const options = {
-        // 테스트용 30초 설정
-        expiresIn: '5s',
+        expiresIn: '1h',
     };
 
     return jwt.sign(payload, secret, options);

@@ -1,5 +1,5 @@
 const corsOptions = {
-    origin: 'http://localhost:8080', 
+    origin: 'http://localhost', 
     methods: 'GET,HEAD,PUT,PATCH,POST,DELETE',
     credentials: true,
     optionsSuccessStatus: 204 

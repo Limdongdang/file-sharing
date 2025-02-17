@@ -3,8 +3,6 @@ import cors from 'cors';
 import path from 'path';
 import { sequelize } from './src/model/index.js';
 import { fileURLToPath } from 'url';
-import { File } from './src/model/file.model.js';
-import { User } from './src/model/user.model.js';
 import { specs, swaggerUi } from './src/swagger.js';
 import fileRoutes from './src/routes/file.js';
 import userRoutes from './src/routes/user.js';
@@ -12,6 +10,9 @@ import { initializeMinio } from './src/config/minio.js';
 import corsOptions from './src/config/cors.js';
 import cookieParser from 'cookie-parser';
 import dotenv from 'dotenv';
+
+import { User } from './src/model/user.model.js';
+import { File } from './src/model/file.model.js';
 
 const app = express();
 const port = 3000;
