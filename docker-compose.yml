@@ -55,10 +55,17 @@ services:
     volumes:
       - ./nginx.conf:/etc/nginx/nginx.conf:ro
       - ./apps/frontend/dist:/usr/share/nginx/hideonstash:ro
+      - ./certbot/conf:/etc/letsencrypt:ro
     depends_on:
       - frontend
     networks:
       - app-network
+
+  certbot:
+    image: certbot/certbot
+    container_name: certbot
+    volumes:
+      - ./certbot/conf:/etc/letsencrypt:rw
 
 networks:
   app-network:
