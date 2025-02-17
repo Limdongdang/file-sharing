@@ -1,7 +1,7 @@
 services:
   frontend:
     build:
-      context: ./app/frontend
+      context: ./apps/frontend
       target: build
     container_name: hideonstash-frontend
     networks:
