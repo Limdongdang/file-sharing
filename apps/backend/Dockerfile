@@ -14,9 +14,4 @@ RUN npm install
 # Copy local code to the container image.
 COPY . .
 
-# wait-for-it.sh 스크립트 복사 및 실행 권한 부여
-COPY wait-for-it.sh /usr/src/app/wait-for-it.sh
-RUN chmod +x /usr/src/app/wait-for-it.sh
-
-# Run the web service on container startup.
-CMD ["./wait-for-it.sh", "db:3306", "--", "npm", "start"]
+CMD ["npm", "start"]
