@@ -7,6 +7,10 @@ services:
       dockerfile: Dockerfile
     ports:
       - "80:80"
+      - "9000:9000"
+    networks:
+      - minio_network
+
   backend:
     build:
       context: ./apps/backend
@@ -25,6 +29,8 @@ services:
       - MINIO_ROOT_PASSWORD=${MINIO_ROOT_PASSWORD}
     depends_on:
       - db
+    networks:
+      - minio_network
 
   db:
     image: mysql:8.0
@@ -37,6 +43,8 @@ services:
       MYSQL_PASSWORD: ${MYSQL_PASSWORD}
     volumes:
       - db_data:/var/lib/mysql
+    networks:
+      - minio_network
 
   minio:
     image: minio/minio
@@ -45,11 +53,14 @@ services:
       MINIO_ROOT_USER: ${MINIO_ROOT_USER}
       MINIO_ROOT_PASSWORD: ${MINIO_ROOT_PASSWORD}
     ports:
-      - "9000:9000"
       - "9001:9001" # 웹 UI 포트 매핑
     volumes:
       - minio_data:/data
+    networks:
+      - minio_network
   
 volumes:
   db_data:
   minio_data:
+networks:
+  minio_network:

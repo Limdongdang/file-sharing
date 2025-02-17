@@ -51,7 +51,9 @@ const getPresignedUrl = async (name) => {
             if (err) {
                 reject(err);
             } else {
-                resolve(url);
+                console.log(url);
+                const externalUrl = url.replace('http://minio:9000', 'http://localhost:9000');
+                resolve(externalUrl);
             }
         })
     })
@@ -63,7 +65,8 @@ const getPresignedUrlGetObject = async (name) => {
             if (err) {
                 reject(err);
             } else {
-                resolve(url);
+                const externalUrl = url.replace('http://minio:9000', 'http://localhost:9000');
+                resolve(externalUrl);
             }
         })
     })
