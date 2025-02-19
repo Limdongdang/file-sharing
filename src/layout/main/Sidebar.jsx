@@ -68,6 +68,11 @@ const SideBar = () => {
             fileInput.onchange = async (event) => {
                 const file = event.target.files[0];
                 if (file) {
+                    const maxSizeInBytes = 1 * 1024 * 1024 * 1024; // 1GB
+                    if (file.size > maxSizeInBytes) {
+                        alert('파일 사이즈가 1GB를 초과합니다.');
+                        return;
+                    }
                     await fileService.uploadFileAndSaveInfo(file);
                     setIsDropdownOpen(false);
                     setSidebarEvent('fileUploaded');
