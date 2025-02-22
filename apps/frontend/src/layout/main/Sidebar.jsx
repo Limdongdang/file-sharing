@@ -57,8 +57,8 @@ const SideBar = () => {
 
     const uploadMenuItems = [
         { icon : FaFileUpload , label: '파일 업로드', onClick: () => handleUploadFile() },
-        { icon: RiFolderUploadFill,label: '폴더 업로드', onClick: () => alert('폴더 업로드 클릭됨') },
-        { icon: FaLink ,label: '링크 업로드', onClick: () => alert('링크 업로드 클릭됨') },
+        { icon: RiFolderUploadFill,label: '폴더 업로드', onClick: () => alert('폴더 업로드 업데이트 예정입니다.') },
+        { icon: FaLink ,label: '링크 업로드', onClick: () => alert('링크 업로드 업데이트 예정입니다.') },
     ];
 
     const handleUploadFile = () => {

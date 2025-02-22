@@ -74,6 +74,10 @@ const Header = () => {
     }
   ]
 
+  const handleSettings = () => {
+    alert('설정 업데이트 예정입니다.');
+  }
+
 
   return (
     <HeaderContainer>
@@ -83,7 +87,7 @@ const Header = () => {
         <Nav>
         <NavItems>
             <NavItem><DropdownCircle icon={FaUserCircle} menuItems={menuItems} size={24}></DropdownCircle></NavItem>
-            <NavItem><IconButton icon={IoMdSettings} size={24}></IconButton></NavItem>
+            <NavItem><IconButton icon={IoMdSettings} size={24} onClick={handleSettings}></IconButton></NavItem>
         </NavItems>
         </Nav>
     </HeaderContainer>
