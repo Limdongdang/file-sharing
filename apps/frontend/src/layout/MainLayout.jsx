@@ -9,7 +9,7 @@ const MainLayout = () => {
     <>
         <Header />
         <SideBar />
-        <div style={{ minWidth: '800px' }}>
+        <div style={{ minWidth: '800px', padding: '20px' }}>
           <Content>
             <Outlet />
           </Content>
