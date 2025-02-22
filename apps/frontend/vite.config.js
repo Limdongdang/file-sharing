@@ -7,6 +7,12 @@ export default defineConfig({
   plugins: [react()],
   server: {
     port: 8080,
+    proxy: {
+      '/api': {
+        target: 'https://hideonstash.site',
+        secure: false,
+    }
+  }
   },
   resolve: {
     alias: {

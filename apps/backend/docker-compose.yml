@@ -1,18 +1,17 @@
 version: '3.8'
 
 services:
-  # backend:
-  #   build:
-  #     context: ./apps/backend
-  #     dockerfile: Dockerfile
-  #   ports:
-  #     - "3000:3000"
-  #   depends_on:
-  #     - db
-  #     - minio
-  #   networks:
-  #     - app_network
-  
+  backend:
+    build:
+      context: .
+      dockerfile: Dockerfile
+    ports:
+      - "3000:3000"
+    depends_on:
+      - db
+      - minio
+    networks:
+      - minio_network
   db:
     image: mysql:8.0
     ports:
@@ -25,7 +24,7 @@ services:
     volumes:
       - db_data:/var/lib/mysql
     networks:
-      - app_network
+      - minio_network
 
   minio:
     image: minio/minio
@@ -39,21 +38,10 @@ services:
     volumes:
       - minio_data:/data
     networks:
-      - app_network
-
-  # frontend:
-  #   build:
-  #     context: ./apps/frontend
-  #     dockerfile: Dockerfile
-  #   ports:
-  #     - "80:80"
-  #     - "443:443"
-  #   volumes:
-  #     - /etc/letsencrypt:/etc/letsencrypt:ro
-  #     - /var/www/html:/var/www/html
+      - minio_network
   
 volumes:
   db_data:
   minio_data:
 networks:
-  app_network:
+  minio_network:
