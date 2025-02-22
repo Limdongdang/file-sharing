@@ -3,7 +3,6 @@ import cors from 'cors';
 import path from 'path';
 import { sequelize } from './src/model/index.js';
 import { fileURLToPath } from 'url';
-import { specs, swaggerUi } from './src/swagger.js';
 import fileRoutes from './src/routes/file.js';
 import userRoutes from './src/routes/user.js';
 import { initializeMinio } from './src/config/minio.js';
@@ -20,8 +19,6 @@ app.use(cors(corsOptions));
 app.use(express.json());
 app.use(cookieParser());
 
-// swagger UI 설정
-app.use('/api-docs', swaggerUi.serve, swaggerUi.setup(specs));
 app.use('/api/file', fileRoutes);
 app.use('/api/user', userRoutes);
 
