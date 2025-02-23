@@ -5,7 +5,7 @@ import { sequelize } from './src/model/index.js';
 import { fileURLToPath } from 'url';
 import fileRoutes from './src/routes/file.js';
 import userRoutes from './src/routes/user.js';
-import { initializeMinio } from './src/config/minio.js';
+// import { initializeMinio } from './src/config/minio.js';
 import corsOptions from './src/config/cors.js';
 import cookieParser from 'cookie-parser';
 
@@ -23,7 +23,7 @@ app.use('/api/file', fileRoutes);
 app.use('/api/user', userRoutes);
 
 // MySQL 연결
-await sequelize.sync({ force: false })
+await sequelize.sync({ alter: true, force: false })
   .then(() => {
     console.log('MySQL 연결 성공');
   })
@@ -31,7 +31,7 @@ await sequelize.sync({ force: false })
     console.error('MySQL 연결 오류:', err);
   });
 
-initializeMinio();
+// initializeMinio();
 
 const __filename = fileURLToPath(import.meta.url);
 const __dirname = path.dirname(__filename);

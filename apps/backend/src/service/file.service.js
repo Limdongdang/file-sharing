@@ -8,8 +8,10 @@ const getFiles = async () => {
     return files;
 }
 
-const uploadFile = async (body) => {
+const uploadFile = async (user, body) => {
     const { originalname, path, size, mimetype } = body;
+
+    const uploader = user.id;
 
     const filename = originalname + Date.now();
     await File.create({
@@ -18,10 +20,11 @@ const uploadFile = async (body) => {
         path,
         size,
         mimetype,
+        uploader: uploader
     });
 }
 
-const removeFile = async (data) => {
+const removeFile = async (user, data) => {
     const transaction = await sequelize.transaction();
 
     try{
@@ -32,7 +35,7 @@ const removeFile = async (data) => {
             transaction,
         });
         
-        await minioClient.removeObject('uploads', data.name , (err) => {
+        await minioClient.removeObject(user.username , data.name , (err) => {
             if (err) {
                 console.log(err);
             }
@@ -51,9 +54,11 @@ const changeExternalUrl = (url) => {
     process.env.MINIO_EXTERNAL_ENDPOINT || 'http://localhost:9000');
 }
 
-const getPresignedUrl = async (name) => {
+const getPresignedUrl = async (user, filename) => {
+    await checkAndCreateBucket(user.username);
+
     return new Promise((resolve, reject) => {
-        minioClient.presignedPutObject('uploads', name, 24 * 60 * 60, (err, url) => {
+        minioClient.presignedPutObject(user.username, filename, 24 * 60 * 60, (err, url) => {
             if (err) {
                 reject(err);
             } else {
@@ -65,9 +70,9 @@ const getPresignedUrl = async (name) => {
     })
 }
 
-const getPresignedUrlGetObject = async (name) => {
+const getPresignedUrlGetObject = async (user, filename) => {
     return new Promise((resolve, reject) => {
-        minioClient.presignedGetObject('uploads', name, 60, (err, url) => {
+        minioClient.presignedGetObject(user.username, filename, 60, (err, url) => {
             if (err) {
                 reject(err);
             } else {
@@ -76,6 +81,27 @@ const getPresignedUrlGetObject = async (name) => {
             }
         })
     })
+}
+
+const checkAndCreateBucket = async (bucketName) => {
+    return new Promise((resolve, reject) => {
+        minioClient.bucketExists(bucketName, (err, exists) => {
+            if (exists) {
+                resolve();
+            } else if (!exists) {
+                minioClient.makeBucket(bucketName, 'us-east-1', (err) => {
+                    if (err) {
+                        reject(err);
+                    } else {
+                        resolve();
+                    }
+                });
+            }
+            else{
+                reject(err);
+            }
+        });
+    });
 }
         
 export default { getFiles, uploadFile, getPresignedUrl, getPresignedUrlGetObject, removeFile };

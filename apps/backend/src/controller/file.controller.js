@@ -2,7 +2,7 @@ import fileService from '../service/file.service.js';
 
 export const uploadFile = async (req, res) => {
     try {
-        await fileService.uploadFile(req.body);
+        await fileService.uploadFile(req.user, req.body);
         res.status(200).send('파일 업로드 성공');
     }
     catch (error) {
@@ -21,8 +21,9 @@ export const getFiles = async (req, res) => {
 }
 
 export const getPresignedUrl = async (req, res) => {
+    console.log(req.user, req.query.name);
     try {
-        const url = await fileService.getPresignedUrl(req.query.name);
+        const url = await fileService.getPresignedUrl(req.user, req.query.name);
         res.status(200).send(url);
     }
     catch (error) {
@@ -32,7 +33,7 @@ export const getPresignedUrl = async (req, res) => {
 
 export const getPresignedUrlGetObject = async (req, res) => {
     try {
-        const url = await fileService.getPresignedUrlGetObject(req.query.name);
+        const url = await fileService.getPresignedUrlGetObject(req.user, req.query.name);
         res.status(200).send(url);
     }
     catch (error) {
@@ -42,7 +43,7 @@ export const getPresignedUrlGetObject = async (req, res) => {
 
 export const removeFile = async (req, res) => {
     try {
-        await fileService.removeFile(req.query);
+        await fileService.removeFile(req.user, req.query);
         res.status(200).send('파일 삭제 성공');
     }
     catch (error) {
