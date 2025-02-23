@@ -74,6 +74,18 @@ const FormatDate = (isoString) => {
   }
   return format(date, 'yyyy.MM.dd');
 }
+// 파일 사이즈 포맷
+const FormatFileSize = (size) => {
+  if (size < 1024) {
+    return `${size} B`;
+  } else if (size < 1024 * 1024) {
+    return `${(size / 1024).toFixed(2)} KB`;
+  } else if (size < 1024 * 1024 * 1024) {
+    return `${(size / (1024 * 1024)).toFixed(2)} MB`;
+  } else {
+    return `${(size / (1024 * 1024 * 1024)).toFixed(2)} GB`;
+  }
+}
 
 const FileList = ({ sidebarEvent }) => {
   const [filelist, setFilelist] = useState([]);
@@ -146,7 +158,7 @@ const FileList = ({ sidebarEvent }) => {
                   <span style={{marginLeft: '8px'}}></span>
                   {data.originalname}
                 </div>
-                <div style={{ flex: 2 }}>{data.size}</div>
+                <div style={{ flex: 2 }}>{FormatFileSize(data.size)}</div>
                 <div style={{ flex: 2 }}>{FormatDate(data.createdAt)}</div>
                 <div style={{ flex: 1 }}>
                   <DropdownCircle icon={SlOptionsVertical} menuItems={menuItems}/>
