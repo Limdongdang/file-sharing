@@ -47,7 +47,7 @@ const removeFile = async (data) => {
 }
 
 const changeExternalUrl = (url) => {
-    return url.replace(process.env.MINIO_ENDPOINT || 'http://localhost:9000', 
+    return url.replace(process.env.MINIO_INTERNAL_ENDPOINT || 'http://localhost:9000',
     process.env.MINIO_EXTERNAL_ENDPOINT || 'http://localhost:9000');
 }
 
