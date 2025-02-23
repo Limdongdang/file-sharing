@@ -17,7 +17,7 @@
     "dev:frontend": "npm run dev -w frontend",
     "test:backend": "npm run test -w backend",
     "dev:docker:build": "docker-compose --env-file .env.dev -f docker-compose.dev.yml up",
-    "start:docker:build": "docker-compose -f docker-compose.yml up"
+    "start:docker:build": "docker-compose -f docker-compose.yml up -d"
   },
   "author": "",
   "license": "ISC",
