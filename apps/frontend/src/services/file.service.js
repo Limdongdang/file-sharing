@@ -33,6 +33,12 @@ const removeFile = (data) => {
     });
 }
 
+// 파일 공유
+const URL_SHARE_FILE = '/file/share';
+const shareFile = (data) => {
+    return instance.post(URL_SHARE_FILE, data);
+}
+
 //minio 업로드
 const uploadToMinio = (file, url) => {
     return axios.put(url, file, {
@@ -74,4 +80,5 @@ export default {
     uploadFileAndSaveInfo,
     getPresignedUrlGetObject,
     removeFile,
+    shareFile,
 };

@@ -1,10 +1,10 @@
 import React, { useEffect, useState } from 'react';
 import styled from 'styled-components';
 import { SlOptionsVertical } from "react-icons/sl";
-import DropdownMenu from '../common/DropdownMenu';
 import fileService from '../../services/file.service';
 import { parseISO, format } from 'date-fns';
 import DropdownCircle from '@components/common/DropdownCircle'; 
+import ShareModal from '@components/common/ShareModal';
 
 const List = styled.div`
   list-style: none;
@@ -89,6 +89,7 @@ const FormatFileSize = (size) => {
 
 const FileList = ({ sidebarEvent }) => {
   const [filelist, setFilelist] = useState([]);
+  const [isShareModalOpen, setIsShareModalOpen] = useState(false);
 
   const handleDownload = async (file) => {
     try {
@@ -125,6 +126,11 @@ const FileList = ({ sidebarEvent }) => {
     }
   }
 
+  const handleShare = async (file) => {
+    setIsShareModalOpen(true);
+    console.log("모달 오픈");
+  }
+
   useEffect(() => {
     const fetchData = async () => {
       try{
@@ -147,6 +153,7 @@ const FileList = ({ sidebarEvent }) => {
         {filelist?.map((data, index) => {
           const menuItems = [
             { label: '다운로드', onClick: () => handleDownload(data) },
+            { label: '공유하기', onClick: () => handleShare(data)},
             { label: '삭제', onClick: () => handleRemove(data) },
           ]
           return (
@@ -166,6 +173,12 @@ const FileList = ({ sidebarEvent }) => {
             </ListItem>
           );
         })}
+        <ShareModal 
+          isOpen={isShareModalOpen}
+          onRequestClose={() => setIsShareModalOpen(false)}
+          onShare={(expiry) => console.log(expiry)}
+          >
+        </ShareModal>
     </List>
   );
 };
